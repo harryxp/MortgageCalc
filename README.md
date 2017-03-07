@@ -24,8 +24,11 @@ Web:
     stack build
     open index.html     # generated JS files are referenced by index.html
 
+[Link to the calculator.](https://cdn.rawgit.com/harryxp/MortgageCalc/326b42c3/web/dist/index.html)
+
 TODO:
 
-* There's a small difference between results calculated by the two versions.  Find out why.
 * Move common library code to a proper place.
+* Input rate as `3.5` instead of `0.035`.
+* There's a small difference between results calculated by Haskell and JavaScript compiled from Haskell.
 
