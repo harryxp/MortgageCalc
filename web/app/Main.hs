@@ -4,9 +4,9 @@ import Control.Monad.IO.Class (MonadIO(..))
 import GHCJS.DOM (currentDocument)
 import GHCJS.DOM.Document (getElementByIdUnsafe)
 import GHCJS.DOM.EventM (on)
-import GHCJS.DOM.HTMLInputElement (getValueUnsafe, setValue)
-import GHCJS.DOM.Types (HTMLInputElement(..), unsafeCastTo)
-import MortgageCalc (calcMonthlyPayment, calcAmortization)
+import GHCJS.DOM.HTMLInputElement (getValueUnsafe,setValue)
+import GHCJS.DOM.Types (HTMLInputElement(..),unsafeCastTo)
+import MortgageCalc (calcMonthlyPayment,calcAmortization)
 
 import qualified GHCJS.DOM.Element as E (click)
 
