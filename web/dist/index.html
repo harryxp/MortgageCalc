@@ -6,13 +6,12 @@
     <script language="javascript" src="out.js"></script>
   </head>
   <body>
-      <p>Loan amount: <input id="loan"></input></p>
-      <p>Interest rate: <input id="interest"></input></p>
+      <p>Loan amount (e.g., 300000): $<input id="loan"></input></p>
+      <p>Interest rate (e.g., 4): <input id="interest"></input>%</p>
       <p>Loan duration (in years): <input id="year"></input></p>
       <p><button id="calc">Calculate</button></p>
       <hr />
-      <p>Your monthly payment is <input id="monthly_payment" size="20"></input>,
-          and the total payment is <input id="total_payment" size="20"></input>.</p>
+      <pre id="output"></pre>
   </body>
   <script language="javascript" src="runmain.js" defer></script>
 </html>

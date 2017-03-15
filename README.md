@@ -22,13 +22,14 @@ Web:
     stack setup
 
     stack build
+    cp .stack-work/dist/x86_64-linux/Cabal-1.24.2.0_ghcjs/build/MortgageCalc/MortgageCalc.jsexe/*js dist/
     open index.html     # generated JS files are referenced by index.html
 
-[Link to the calculator.](https://cdn.rawgit.com/harryxp/MortgageCalc/326b42c3/web/dist/index.html)
+[Link to the calculator.](https://cdn.rawgit.com/harryxp/MortgageCalc/master/web/dist/index.html)
 
 TODO:
 
-* Move common library code to a proper place.
-* Input rate as `3.5` instead of `0.035`.
 * There's a small difference between results calculated by Haskell and JavaScript compiled from Haskell.
+* A checkbox to toggle whether to calculate amortization for the web version.
+* Error handling.
 

@@ -48,7 +48,8 @@ So finally, monthly payment P is
 
   P = (r - 1) / (r ^ (12N + 1) - r) * L
 
-> module MortgageCalc (calcMonthlyPayment, calcAmortization) where
+> module MortgageCalc (calcAmortization,calcMonthlyPayment,showAmortization,showMonthlyPayment) where
+> import Text.Printf (printf)
 
 > calcMonthlyPayment :: Float -> Float -> Int -> Float
 > calcMonthlyPayment l i n = (r - 1) / (r ^ (12 * n + 1) - r) * l
@@ -68,8 +69,8 @@ before payment.  This amount minus the balance from last month, is how much is
 paid off in principal.
 ...
 
-> calcAmortization :: Float -> Float -> Float -> Int -> [(Int, Float, Float, Float)]
-> calcAmortization p l i n = calcAmortization' 0 l [(0, 0, 0, l)]
+> calcAmortization :: Float -> Float -> Float -> Int -> [(Int,Float,Float,Float)]
+> calcAmortization p l i n = calcAmortization' 0 l [(0,0,0,l)]
 >   where
 >     calcAmortization' period balance tuples =
 >       if period >= n * 12
@@ -82,5 +83,20 @@ paid off in principal.
 >             calcAmortization'
 >               (period + 1)
 >               newBalance
->               ((period + 1, principalPaidOfMonth, interestPaidOfMonth, newBalance) : tuples)
+>               ((period + 1,principalPaidOfMonth,interestPaidOfMonth,newBalance) : tuples)
+
+And some pretty-printing functions:
+
+> showMonthlyPayment :: Int -> Float -> String
+> showMonthlyPayment n p =
+>   printf "Your monthly payment is $%f, and the total payment is $%f.\n" p (p * 12 * fromIntegral n)
+
+> showAmortization :: [(Int,Float,Float,Float)] -> String
+> showAmortization a =
+>   printf "Detailed amortization:\n\
+>          \%7s%22s%22s%22s\n%s" "Month #" "Principal" "Interest" "Balance" (foldl showOneTuple "" a)
+>   where
+>     showOneTuple :: String -> (Int,Float,Float,Float) -> String
+>     showOneTuple accum (period,pPaid,iPaid,balance) =
+>       printf "%7d%22.2f%22.2f%22.2f\n%s" period pPaid iPaid balance accum
 

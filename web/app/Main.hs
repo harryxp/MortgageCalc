@@ -1,12 +1,14 @@
 module Main (main) where
 
-import Control.Monad.IO.Class (MonadIO(..))
+import Control.Monad (liftM)
 import GHCJS.DOM (currentDocument)
 import GHCJS.DOM.Document (getElementByIdUnsafe)
 import GHCJS.DOM.EventM (on)
-import GHCJS.DOM.HTMLInputElement (getValueUnsafe,setValue)
-import GHCJS.DOM.Types (HTMLInputElement(..),unsafeCastTo)
-import MortgageCalc (calcMonthlyPayment,calcAmortization)
+import GHCJS.DOM.HTMLElement (setInnerText)
+import GHCJS.DOM.HTMLInputElement (getValueUnsafe)
+import GHCJS.DOM.Types (HTMLInputElement(..),HTMLPreElement(..),unsafeCastTo)
+
+import MortgageCalc (calcAmortization,calcMonthlyPayment,showAmortization,showMonthlyPayment)
 
 import qualified GHCJS.DOM.Element as E (click)
 
@@ -19,18 +21,15 @@ main = do
   interestInput  <- (getElementByIdUnsafe doc "interest" >>= unsafeCastTo HTMLInputElement)
   calcButton     <- getElementByIdUnsafe doc "calc"
   -- output
-  monthlyPayment <- (getElementByIdUnsafe doc "monthly_payment" >>= unsafeCastTo HTMLInputElement)
-  totalPayment   <- (getElementByIdUnsafe doc "total_payment" >>= unsafeCastTo HTMLInputElement)
+  output         <- (getElementByIdUnsafe doc "output" >>= unsafeCastTo HTMLPreElement)
 
   on calcButton E.click $ do
-    loan     <- getValueUnsafe loanInput
-    interest <- getValueUnsafe interestInput
-    year     <- getValueUnsafe yearInput
-    let monthly = calcMonthlyPayment (read loan) (read interest) (read year) in
-      setValue' monthlyPayment ((Just . show) monthly) >>
-      setValue' totalPayment ((Just . show) (monthly * 12 * (read year)))
+    l <- (liftM read . getValueUnsafe) loanInput
+    i <- (liftM (/100) . liftM read . getValueUnsafe) interestInput
+    n <- (liftM read . getValueUnsafe) yearInput
+    let p = calcMonthlyPayment l i n
+        a = calcAmortization p l i n in
+      setInnerText output (Just (showMonthlyPayment n p ++ "\n" ++ showAmortization a))
 
   return ()
 
-setValue' :: (MonadIO m) => HTMLInputElement -> Maybe String -> m ()
-setValue' = setValue
